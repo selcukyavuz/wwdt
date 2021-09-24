@@ -3,7 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "EndpointUri" : "https://wwdt.documents.azure.com:443/",
-    "PrimaryKey" : "fX2BORU6JL2F5CJZpGnA51wE8Y72ZNnImj7FcRrV60Zar8AkQeQNGh8Zid2iIAQAVCDmlvoyqEvUPrQ12hgyZA=="
+    "EndpointUri" : "ENTER_ENDPOINT_HERE/",
+    "PrimaryKey" : "ENTER_PRIMARYKEY_HERE"
   }
 }
