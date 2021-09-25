@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 namespace Company.Function
 {
-    public static class Select
+    public static class SelectById
     {
-        [FunctionName("Select")]
+        [FunctionName("SelectById")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get" , Route = null)] HttpRequest req,
             ILogger log)
@@ -20,13 +20,13 @@ namespace Company.Function
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string who = req.Query["who"];
+            string id = req.Query["id"];
             
             EntryHelper entryHelper = new EntryHelper(log);
             
-            List<Entry> entries = await entryHelper.QueryItemsAsync(who);
+            Entry entry = await entryHelper.QueryItemByIdAsync(id);
 
-            return new OkObjectResult(entries);
+            return new OkObjectResult(entry);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Company.Function
 {
@@ -130,6 +131,36 @@ namespace Company.Function
             return entries;
         }
         // </QueryItemsAsync>
+
+        // <QueryItemByIdAsync>
+        /// <summary>
+        /// Run a query (using Azure Cosmos DB SQL syntax) against the container
+        /// Including the partition key value of lastName in the WHERE filter results in a more efficient query
+        /// </summary>
+        public async Task<Entry> QueryItemByIdAsync(string id)
+        {
+            var sqlQueryText = "SELECT * FROM c WHERE c.id = '" + id + "'";
+
+            log.LogInformation("Running query: {0}\n", sqlQueryText);
+
+            QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
+            FeedIterator<Entry> queryResultSetIterator = this.container.GetItemQueryIterator<Entry>(queryDefinition);
+
+            List<Entry> entries = new List<Entry>();
+
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                FeedResponse<Entry> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                foreach (Entry entry in currentResultSet)
+                {
+                    entries.Add(entry);
+                    log.LogInformation("\tRead {0}\n", entry);
+                }
+            }
+
+            return entries.FirstOrDefault();
+        }
+        // </QueryItemByIdAsync>
 
         /// <summary>
         /// Replace an item in the container
